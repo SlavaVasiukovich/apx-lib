@@ -55,11 +55,13 @@ constexpr fmt_e default_fmt(type_id_e type, units_e units)
         return fmt_sbyte;
     case units_kg:
         return fmt_f16;
-    case units_deg:
+    case units_rad:
         return fmt_rad;
-    case units_degps:
+    case units_deg:
+        return fmt_real;
+    case units_radps:
         return fmt_sbyte_001;
-    case units_degps_sq:
+    case units_radps_sq:
         return fmt_sbyte_001;
     case units_K:
         return fmt_f16;
@@ -130,6 +132,10 @@ constexpr ds_field_s ds(fmt_e _fmt = default_fmt(M::meta.type_id, static_cast<un
 static constexpr const ds_field_s dataset_default[] = {
 
     // est
+    ds<est::nav::att::valid>(fmt_bit),
+    ds<est::nav::pos::valid>(fmt_bit),
+    ds<est::nav::gyro::valid>(fmt_bit),
+    ds<est::nav::acc::valid>(fmt_bit),
 
     ds<est::nav::att::status>(fmt_opt),
     ds<est::nav::att::roll>(fmt_rad),
