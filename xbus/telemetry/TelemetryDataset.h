@@ -161,7 +161,7 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<est::nav::pos::lon>(fmt_real),
     ds<est::nav::pos::hmsl>(fmt_real),
 
-    ds<est::nav::pos::course>(fmt_rad),
+    ds<est::nav::pos::bearing>(fmt_rad),
     ds<est::nav::pos::speed>(fmt_f16, seq_skip),
     ds<est::nav::pos::altitude>(fmt_real),
     ds<est::nav::pos::vspeed>(fmt_f16),
@@ -202,7 +202,7 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<est::env::sys::health>(fmt_opt),
     ds<est::env::sys::time>(fmt_dword),
     ds<est::env::sys::ttl>(fmt_word),
-    ds<est::env::sys::energy>(fmt_byte_u),
+    ds<est::env::sys::fuel>(fmt_byte_u),
 
     // ctr
     ds<ctr::nav::att::ail>(fmt_sbyte_u),
@@ -284,7 +284,7 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<cmd::nav::pos::lat>(fmt_real, seq_skip),
     ds<cmd::nav::pos::lon>(fmt_real, seq_skip),
     ds<cmd::nav::pos::hmsl>(fmt_real, seq_skip),
-    ds<cmd::nav::pos::course>(fmt_rad),
+    ds<cmd::nav::pos::bearing>(fmt_rad),
     ds<cmd::nav::pos::radius>(fmt_f16),
 
     ds<cmd::nav::pos::altitude>(fmt_real),

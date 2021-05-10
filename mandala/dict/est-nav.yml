@@ -101,7 +101,7 @@
       title: Altitude above ground
       units: m
 
-    - name: course
+    - name: bearing
       title: Moving direction
       units: rad
 
@@ -156,6 +156,10 @@
     - name: "az"
       title: Angular acceleration Z
       units: rad/s^2
+
+    - name: turn
+      title: Turn rate
+      units: rad/s
 
 - name: acc
   title: Acceleration
