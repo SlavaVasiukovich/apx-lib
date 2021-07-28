@@ -96,7 +96,9 @@ constexpr fmt_e default_fmt(type_id_e type, units_e units)
     case units_rad_sq:
         return fmt_byte_01;
     case units_rpm:
-        break;
+        return fmt_word_10;
+    case units_rpmps:
+        return fmt_word;
     case units_s:
         break;
     case units_min:
@@ -130,6 +132,8 @@ constexpr ds_field_s ds(fmt_e _fmt = default_fmt(M::meta.type_id, static_cast<un
 {
     return ds_field_s{xbus::pid_s(M::uid, _pri, _seq), _fmt};
 }
+
+// TODO shorten dataset to minimum, or use `auto` to catch used variables
 
 static constexpr const ds_field_s dataset_default[] = {
 
@@ -195,10 +199,10 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<est::env::wind::speed>(fmt_byte_01, seq_rare),
     ds<est::env::wind::heading>(fmt_rad, seq_rare),
 
+    ds<est::nav::wpt::status>(fmt_bit),
     ds<est::nav::wpt::eta>(fmt_word),
     ds<est::nav::wpt::delta>(fmt_f16),
     ds<est::nav::wpt::xtrack>(fmt_f16),
-    ds<est::nav::wpt::thdg>(fmt_rad),
 
     ds<est::env::sys::mode>(fmt_opt),
     ds<est::env::sys::health>(fmt_opt),
@@ -206,13 +210,16 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<est::env::sys::ttl>(fmt_word),
     ds<est::env::sys::fuel>(fmt_byte),
 
+    ds<est::env::eng::status>(fmt_opt),
+    ds<est::env::eng::rpm>(fmt_word_10, seq_rare),
+
     // ctr
     ds<ctr::nav::att::ail>(fmt_sbyte_u),
     ds<ctr::nav::att::elv>(fmt_sbyte_u),
     ds<ctr::nav::att::rud>(fmt_sbyte_u),
-    ds<ctr::nav::att::col>(fmt_sbyte_u),
 
     ds<ctr::nav::eng::thr>(fmt_byte_u),
+    ds<ctr::nav::eng::prop>(fmt_sbyte_u),
     ds<ctr::nav::eng::starter>(fmt_bit),
     ds<ctr::nav::eng::ign1>(fmt_bit),
     ds<ctr::nav::eng::ign2>(fmt_bit),
@@ -270,7 +277,7 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<cmd::nav::reg::att>(fmt_bit),
     ds<cmd::nav::reg::pos>(fmt_opt),
     ds<cmd::nav::reg::spd>(fmt_bit),
-    ds<cmd::nav::reg::alt>(fmt_bit),
+    ds<cmd::nav::reg::alt>(fmt_opt),
     ds<cmd::nav::reg::eng>(fmt_bit),
     ds<cmd::nav::reg::yaw>(fmt_opt),
     ds<cmd::nav::reg::str>(fmt_bit),
@@ -294,9 +301,10 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<cmd::nav::pos::airspeed>(fmt_f16),
     ds<cmd::nav::pos::tecs>(fmt_byte_u),
 
+    ds<cmd::nav::eng::mode>(fmt_opt),
+    ds<cmd::nav::eng::rpm>(fmt_word_10),
     ds<cmd::nav::eng::cut>(fmt_bit),
     ds<cmd::nav::eng::ovr>(fmt_bit),
-    ds<cmd::nav::eng::rpm>(fmt_word),
 
     ds<cmd::nav::rc::ovr>(fmt_bit),
 
@@ -331,17 +339,14 @@ static constexpr const ds_field_s dataset_default[] = {
     ds<sns::nav::agl::src>(fmt_opt),
     ds<sns::nav::agl::status>(fmt_bit),
 
-    ds<sns::env::eng::status>(fmt_opt),
-    ds<sns::env::eng::rpm>(fmt_word, seq_rare),
-    ds<sns::env::eng::temp>(fmt_byte, seq_rare),
-    ds<sns::env::eng::ot>(fmt_byte, seq_rare),
-    ds<sns::env::eng::egt>(fmt_byte_10, seq_rare),
-    ds<sns::env::eng::egtd>(fmt_byte_10, seq_rare),
-    ds<sns::env::eng::op>(fmt_byte_01, seq_rare),
-    ds<sns::env::eng::map>(fmt_byte, seq_rare),
-    ds<sns::env::eng::iap>(fmt_byte, seq_rare),
-    ds<sns::env::eng::tc>(fmt_opt),
-    ds<sns::env::eng::block>(fmt_bit),
+    // ds<sns::env::eng::temp>(fmt_byte, seq_rare),
+    // ds<sns::env::eng::ot>(fmt_byte, seq_rare),
+    // ds<sns::env::eng::egt>(fmt_byte_10, seq_rare),
+    // ds<sns::env::eng::egtd>(fmt_byte_10, seq_rare),
+    // ds<sns::env::eng::op>(fmt_byte_01, seq_rare),
+    // ds<sns::env::eng::map>(fmt_byte, seq_rare),
+    // ds<sns::env::eng::iap>(fmt_byte, seq_rare),
+    // ds<sns::env::eng::tc>(fmt_opt),
 
     ds<sns::env::bat::status>(fmt_opt),
     ds<sns::env::gen::status>(fmt_opt),
